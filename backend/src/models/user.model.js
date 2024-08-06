@@ -21,21 +21,11 @@ userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
 
 /**
- * Check if email is taken
- * @param {string} email - The user's email
- * @returns {Promise<boolean>}
- */
-userSchema.statics.isEmailTaken = async function (email) {
-  const user = await this.findOne({ email });
-  return !!user;
-};
-
-/**
  * Check if password matches the user's password
  * @param {string} password
  * @returns {Promise<boolean>}
  */
-userSchema.methods.isPasswordMatch = async function (password) {
+userSchema.methods.isCorrectPassword = async function (password) {
   const user = this;
   return bcrypt.compare(password, user.password);
 };

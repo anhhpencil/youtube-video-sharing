@@ -9,6 +9,9 @@ const git = require('git-last-commit');
 const expressWinston = require('express-winston');
 const { Server } = require('socket.io');
 const logger = require('./config/logger');
+const { errorConverter, errorHandler } = require('./middlewares/error');
+const { responseHandler} = require('./middlewares/response');
+const routes = require('./routes');
 
 const app = express();
 
@@ -57,6 +60,9 @@ app.use(
   })
 );
 
+app.use(responseHandler);
+
+
 app.use('/ping', (req, res) => {
   git.getLastCommit((err, commit) => {
     res.send({
@@ -70,6 +76,29 @@ app.use('/ping', (req, res) => {
     });
   });
 });
+
+// api routes
+app.use('/api', routes);
+
+
+// send back a 404 error for any unknown api request
+app.use((req, res) => {
+    const statusCode = httpStatus.NOT_FOUND;
+    const response = {
+        hasError: true,
+        statusCode,
+        message: 'Not found',
+        data: {},
+    };
+
+    res.status(404).send(response);
+});
+
+// convert error to ApiError
+app.use(errorConverter);
+
+// handle error
+app.use(errorHandler);
 
 io.on('connection', (socket) => {
   logger.info('A user connected');

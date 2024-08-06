@@ -29,7 +29,6 @@ const signup = async (email, password) => {
   if (existePlayer) {
     throw new ApiError(STATUS_CODE.EXISTED_VALUE, 'The email has existed.');
   }
-
   const encrytedPassword = encrypt(password, config.system.secret);
 
   await User.create({

@@ -45,7 +45,7 @@ const getSharedVideo = async (filter, options) => {
     };
   });
 
-  return { totalListing: totalResults, videos: formatResult, totalPages };
+  return { totalShared: totalResults, videos: formatResult, totalPages };
 };
 
 module.exports = {

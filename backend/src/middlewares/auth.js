@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
-const { Users } = require('../models');
+const { User } = require('../models');
 const logger = require('../config/logger');
 
 const { authService } = require('../services');
@@ -18,9 +18,9 @@ const auth = () => async (req, res, next) => {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Not authorized');
     }
 
-    const username = authService.decodeJWTToken(apiToken);
+    const email = authService.decodeJWTToken(apiToken);
 
-    const user = await Users.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Your account does not exist');
     }
