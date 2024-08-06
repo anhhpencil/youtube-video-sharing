@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  node-app:
+    build: .
+    image: node-app
+    env_file: ./.env
+    ports:
+      - $PORT:$PORT
+    environment:
+      - MONGODB_URL=$MONGODB_URL
+      - PORT:$PORT
+      - NODE_ENV:$NODE_ENV
+      - JWT_SECRET:$JWT_SECRET
+      - JWT_ACCESS_EXPIRATION_MINUTES=$JWT_ACCESS_EXPIRATION_MINUTES
+      - SYSTEM_SECRET=$SYSTEM_SECRET
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/node-app
+    networks:
+      - node-network
+
+  mongodb:
+    image: mongo:6.0.2
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - node-network
+
+volumes:
+  dbdata:
+
+networks:
+  node-network:
+    driver: bridge

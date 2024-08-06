@@ -1,25 +1,23 @@
 const Joi = require('joi');
 
-const youtubeUrlPattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-
 const isYouTubeUrl = (value, helpers) => {
-    try {
-        const url = new URL(value);
-        const validHostnames = ['www.youtube.com', 'youtube.com', 'youtu.be'];
-        if (!validHostnames.includes(url.hostname)) {
-            return helpers.error('any.invalid');
-        }
-        return value;
-    } catch (err) {
-        return helpers.error('any.invalid');
+  try {
+    const url = new URL(value);
+    const validHostnames = ['www.youtube.com', 'youtube.com', 'youtu.be'];
+    if (!validHostnames.includes(url.hostname)) {
+      return helpers.error('any.invalid');
     }
+    return value;
+  } catch (err) {
+    return helpers.error('any.invalid');
+  }
 };
 
 const shareVideo = {
   body: Joi.object().keys({
-      link: Joi.string().custom(isYouTubeUrl, 'YouTube URL validation').required().messages({
-          'any.invalid': 'The URL must be a valid YouTube link',
-      }),
+    link: Joi.string().custom(isYouTubeUrl, 'YouTube URL validation').required().messages({
+      'any.invalid': 'The URL must be a valid YouTube link',
+    }),
   }),
 };
 
