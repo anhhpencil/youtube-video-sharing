@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -6,11 +7,21 @@ const compression = require('compression');
 const cors = require('cors');
 const git = require('git-last-commit');
 const expressWinston = require('express-winston');
-const winston = require('winston');
-
+const { Server } = require('socket.io');
+const logger = require('./config/logger');
 
 const app = express();
 
+// Open socket here
+const server = http.Server(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: `*`, // TODO only allow our FE
+    methods: ['GET', 'POST'],
+  },
+  transports: ['websocket'],
+});
 
 // set security HTTP headers
 app.use(helmet());
@@ -32,39 +43,40 @@ app.use(compression());
 app.use(cors());
 app.options('*', cors());
 
-app.use(
-    expressWinston.logger({
-        // use logger to log every requests
-        // transports: [logger],
-        transports: [
-            new winston.transports.Console({
-                format: winston.format.combine(
-                    winston.format.colorize(),
-                    winston.format.simple()
-                )
-            })
-        ],
-        meta: false,
-        expressFormat: false,
-        colorize: true,
-    })
-);
-app.use('/ping', (req, res) => {
-    git.getLastCommit((err, commit) => {
-        res.send({
-            message: 'Connected To Youtube Video Sharing Backend',
-            lastCommit: {
-                hash: commit && commit.hash,
-                committedOn: commit && commit.committedOn,
-                shortHash: commit && commit.shortHash,
-                branch: commit && commit.branch,
-            },
-        });
-    });
+app.use(function (req, res, next) {
+  req.io = io;
+  next();
 });
 
+app.use(
+  expressWinston.logger({
+    transports: [logger],
+    meta: false,
+    expressFormat: false,
+    colorize: true,
+  })
+);
 
+app.use('/ping', (req, res) => {
+  git.getLastCommit((err, commit) => {
+    res.send({
+      message: 'Connected To Youtube Video Sharing Backend',
+      lastCommit: {
+        hash: commit && commit.hash,
+        committedOn: commit && commit.committedOn,
+        shortHash: commit && commit.shortHash,
+        branch: commit && commit.branch,
+      },
+    });
+  });
+});
 
+io.on('connection', (socket) => {
+  logger.info('A user connected');
 
+  socket.on('disconnect', () => {
+    logger.info('User disconnected');
+  });
+});
 
-module.exports = app;
+module.exports = server;
