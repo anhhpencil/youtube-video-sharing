@@ -7,7 +7,7 @@ const { auth } = require('../middlewares/auth');
 
 const route = Router();
 
-route.get('/', auth(), validate(youtubeVideoValidation.getSharedVideo), youtubeVideoController.getsharedVideo);
+route.get('/', validate(youtubeVideoValidation.getSharedVideo), youtubeVideoController.getsharedVideo);
 route.post('/', auth(), validate(youtubeVideoValidation.shareVideo), youtubeVideoController.shareVideo);
 
 module.exports = route;
