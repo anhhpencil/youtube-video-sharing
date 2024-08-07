@@ -37,6 +37,7 @@ const getSharedVideo = async (filter, options) => {
   const { results, totalPages, totalResults } = videos;
   const formatResult = results.map((item) => {
     return {
+      id: item._id,
       email: item.email,
       link: item.link,
       title: item.title,
