@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const youtubeVideoSchema = new Schema(
   {
     email: { type: String, required: true },
-    link: { type: String, required: true, unique: true },
+    link: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
   },

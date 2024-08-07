@@ -48,10 +48,10 @@ const signup = async (email, password) => {
 const login = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) {
-    throw new ApiError(STATUS_CODE.NOT_FOUND, 'Please resgister an account.');
+    throw new ApiError(STATUS_CODE.NOT_FOUND, 'Please register an account.');
   }
 
-  if (!user.isCorrectPassword(password)) {
+  if (!(await user.isCorrectPassword(password))) {
     throw new ApiError(STATUS_CODE.NOT_FOUND, 'Wrong credential.');
   }
 

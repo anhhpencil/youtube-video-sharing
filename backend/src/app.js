@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const httpStatus = require('http-status');
 const mongoSanitize = require('express-mongo-sanitize');
 const compression = require('compression');
 const cors = require('cors');
@@ -10,7 +11,7 @@ const expressWinston = require('express-winston');
 const { Server } = require('socket.io');
 const logger = require('./config/logger');
 const { errorConverter, errorHandler } = require('./middlewares/error');
-const { responseHandler} = require('./middlewares/response');
+const { responseHandler } = require('./middlewares/response');
 const routes = require('./routes');
 
 const app = express();
@@ -62,7 +63,6 @@ app.use(
 
 app.use(responseHandler);
 
-
 app.use('/ping', (req, res) => {
   git.getLastCommit((err, commit) => {
     res.send({
@@ -80,18 +80,17 @@ app.use('/ping', (req, res) => {
 // api routes
 app.use('/api', routes);
 
-
 // send back a 404 error for any unknown api request
 app.use((req, res) => {
-    const statusCode = httpStatus.NOT_FOUND;
-    const response = {
-        hasError: true,
-        statusCode,
-        message: 'Not found',
-        data: {},
-    };
+  const statusCode = httpStatus.NOT_FOUND;
+  const response = {
+    hasError: true,
+    statusCode,
+    message: 'Not found',
+    data: {},
+  };
 
-    res.status(404).send(response);
+  res.status(404).send(response);
 });
 
 // convert error to ApiError

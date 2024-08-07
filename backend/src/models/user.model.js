@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 const { toJSON, paginate } = require('./plugins');
+const { system } = require('../config/config');
+const { decrypt } = require('../utils/crypto');
 
 const { Schema } = mongoose;
 const userSchema = new Schema(
@@ -27,7 +28,7 @@ userSchema.plugin(paginate);
  */
 userSchema.methods.isCorrectPassword = async function (password) {
   const user = this;
-  return bcrypt.compare(password, user.password);
+  return decrypt(user.password, system.secret) === password;
 };
 
 module.exports = mongoose.model('User', userSchema);
