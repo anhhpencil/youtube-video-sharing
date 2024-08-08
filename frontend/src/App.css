@@ -1,14 +1,19 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
+  /* Using a web font for better design */
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
+  color: #333;
 }
 
 header {
   background-color: #333;
   color: white;
   padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
@@ -16,16 +21,10 @@ header h1 {
   font-size: 24px;
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 nav a {
   color: white;
   text-decoration: none;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 nav a:hover {
@@ -36,7 +35,10 @@ button {
   background-color: #444;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px;
+  /* Increased padding for better touch targets */
+  border-radius: 5px;
+  /* Adding border-radius for better design */
   cursor: pointer;
 }
 
@@ -45,11 +47,14 @@ button:hover {
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  /* Increased margin for better spacing */
 }
 
 label {
@@ -61,8 +66,11 @@ input[type="email"],
 input[type="password"],
 input[type="text"] {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  /* Adding border for better input design */
+  border-radius: 5px;
 }
 
 input[type="submit"] {
@@ -70,6 +78,7 @@ input[type="submit"] {
   color: white;
   border: none;
   padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -83,17 +92,28 @@ input[type="submit"]:hover {
 }
 
 .video-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: white;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
 }
 
-.video-item h2 {
-  margin: 0;
+.video-details {
+  flex: 1;
+}
+
+.video-details h2 {
+  margin: 0 0 10px;
   font-size: 18px;
 }
 
-.video-item p {
+.video-details p {
   margin: 5px 0;
+}
+
+.video-container {
+  flex: 0 0 300px;
 }

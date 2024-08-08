@@ -1,0 +1,11 @@
+services:
+  web-app:
+    build: .
+    container_name: web-app-test
+    command: yarn test
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge

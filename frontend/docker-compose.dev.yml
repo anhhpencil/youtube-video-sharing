@@ -1,0 +1,13 @@
+services:
+  web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web-app-dev
+    command: yarn start
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge

@@ -41,24 +41,24 @@ const VideoList = () => {
         }
     }, []);
 
-
-
     return (
         <div className="video-list">
             {videos.map((video) => (
                 <div key={video.id} className="video-item">
-                    <h2>{video.title}</h2>
-                    <p>Shared by: {video.email}</p>
-                    <p>{video.description}</p>
                     <div className="video-container">
                         <iframe
-                            width="600"
-                            height="400"
+                            width="560"
+                            height="315"
                             src={`https://www.youtube.com/embed/${extractVideoId(video.link)}`}
                             title={video.title}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         ></iframe>
+                    </div>
+                    <div className="video-details">
+                        <h2>{video.title}</h2>
+                        <p><strong>Shared by:</strong> {video.email}</p>
+                        <p><strong>Description:</strong> {video.description}</p>
                     </div>
                 </div>
             ))}

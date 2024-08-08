@@ -1,0 +1,16 @@
+services:
+  web-app:
+    build: .
+    image: web-app
+    env_file: ./.env
+    ports:
+      - $REACT_APP_PORT:$REACT_APP_PORT
+    environment:
+      - REACT_APP_PORT=${REACT_APP_PORT}
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
+volumes:
+  dbdata:
+
+networks:
+  node-network:
+    driver: bridge
