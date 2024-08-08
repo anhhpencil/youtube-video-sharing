@@ -98,15 +98,15 @@ Once the frontend server is running, you will be automatically redirected to a w
 - All Servers:
     - Navigate to the source folder, and start all servers:
     ```
-    yarn docker:web
+    ./start.sh all
     ```
     - Run backend tests:
     ```
-    yarn docker:web-backend-test
+    ./start.sh backend-test
     ```
     - Run frontend tests:
     ```
-    yarn docker:web-frontend-test
+    ./start.sh  frontend-test
     ```
 
 #### 5.3. Running in Live Environment

@@ -1,0 +1,58 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - $PORT:$PORT
+    environment:
+      - MONGODB_URL=$MONGODB_URL
+      - PORT:$PORT
+      - NODE_ENV:$NODE_ENV
+      - JWT_SECRET:$JWT_SECRET
+      - JWT_ACCESS_EXPIRATION_MINUTES=$JWT_ACCESS_EXPIRATION_MINUTES
+      - SYSTEM_SECRET=$SYSTEM_SECRET
+    depends_on:
+      - mongodb
+    volumes:
+      - ./backend:/usr/src/app
+    networks:
+      - webapp-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - $REACT_APP_PORT:$REACT_APP_PORT
+    environment:
+      - REACT_APP_PORT=${REACT_APP_PORT}
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/usr/src/app
+    networks:
+      - webapp-network
+
+  mongodb:
+    image: mongo:6.0.2
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    # volumes:
+    #   - dbdata:/data/db
+    networks:
+      - webapp-network
+
+
+networks:
+  webapp-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
