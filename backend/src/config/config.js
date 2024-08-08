@@ -7,12 +7,13 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const envVarsSchema = Joi.object()
   .keys({
-    PORT: Joi.number().default(5000),
+    PORT: Joi.number().required(),
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required(),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().required(),
     SYSTEM_SECRET: Joi.string().required(),
+    FRONTEND_URL: Joi.string().required().default('http://localhost:8081'),
   })
   .unknown();
 
@@ -39,4 +40,6 @@ module.exports = {
   system: {
     secret: envVars.SYSTEM_SECRET,
   },
+
+  frontend: envVars.FRONTEND_URL,
 };

@@ -13,6 +13,7 @@ const logger = require('./config/logger');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const { responseHandler } = require('./middlewares/response');
 const routes = require('./routes');
+const config = require('./config/config');
 
 const app = express();
 
@@ -21,7 +22,7 @@ const server = http.Server(app);
 
 const io = new Server(server, {
   cors: {
-    origin: `https://youtube-video-sharing-kt3y.onrender.com`, // TODO only allow our FE
+    origin: `${config.frontend}`, // TODO only allow our FE
     methods: ['GET', 'POST'],
   },
   transports: ['websocket'],
@@ -48,7 +49,7 @@ app.use(compression());
 app.use(
   cors({
     credentials: true,
-    origin: ['https://youtube-video-sharing-kt3y.onrender.com'],
+    origin: [`${config.frontend}`],
   })
 );
 
