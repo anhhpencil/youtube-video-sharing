@@ -21,7 +21,7 @@ const server = http.Server(app);
 
 const io = new Server(server, {
   cors: {
-    origin: `*`, // TODO only allow our FE
+    origin: `https://youtube-video-sharing-kt3y.onrender.com`, // TODO only allow our FE
     methods: ['GET', 'POST'],
   },
   transports: ['websocket'],
@@ -44,7 +44,14 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ['https://youtube-video-sharing-kt3y.onrender.com'],
+  })
+);
+
 app.options('*', cors());
 
 app.use(function (req, res, next) {

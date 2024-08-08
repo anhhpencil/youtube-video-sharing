@@ -15,7 +15,7 @@
 ### Running locally (without Docker):
 
 ```bash
-yarn dev
+yarn start
 ```
 
 #### Testing:
